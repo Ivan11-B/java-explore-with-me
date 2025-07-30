@@ -1,0 +1,24 @@
+server:
+  port: 9090
+
+logging:
+  level:
+    org.springframework.web.client.RestTemplate: DEBUG
+
+spring:
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/stats
+    username: postgres
+    password: postgres
+
+  sql:
+    init:
+      mode: always
+
+
+#  mvc:
+#    format.date-time: yyyy-MM-dd HH:mm:ss
+#  jackson:
+#    date-format: yyyy-MM-dd HH:mm:ss
+#    time-zone: UTC

@@ -15,7 +15,7 @@ services:
       interval: 30s
       retries: 3
     environment:
-      SPRING_DATASOURCE_URL: "jdbc:postgresql://stats-db:5432/stats-db"
+      SPRING_DATASOURCE_URL: "jdbc:postgresql://stats-db:5432/stats"
       SPRING_DATASOURCE_USERNAME: "postgres"
       SPRING_DATASOURCE_PASSWORD: "postgres"
 
@@ -79,14 +79,3 @@ networks:
     name: ewn-network
     driver: bridge
 
-
-
-
-
-
-
-
-
-  #  networks:
-  #    backend:
-  #      driver: bridge
