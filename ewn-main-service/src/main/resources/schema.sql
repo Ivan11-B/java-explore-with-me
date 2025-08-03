@@ -1,9 +1,7 @@
-DROP TABLE IF EXISTS hits;
+DROP TABLE IF EXISTS users;
 
-CREATE TABLE IF NOT EXISTS hits (
+CREATE TABLE IF NOT EXISTS users (
     id SERIAL PRIMARY KEY,
-    app varchar(255),
-    uri varchar(255),
-    ip varchar(15),
-    created timestamp
+    name varchar(255),
+    email varchar(255)
     )
