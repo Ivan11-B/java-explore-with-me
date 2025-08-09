@@ -1,23 +1,34 @@
 package ru.practicum.controller;
 
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.dto.CategoryDto;
+import ru.practicum.service.CategoriesService;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/categories")
+@Slf4j
+@RequiredArgsConstructor
 public class PublicCategoriesController {
 
+    private final CategoriesService categoriesService;
+
     @GetMapping
-    public ResponseEntity<List<CategoryDto>> getCategories(@RequestParam Integer from,
-                                                          @RequestParam Integer size) {
-        return ResponseEntity.ok(null);
+    public ResponseEntity<List<CategoryDto>> getCategories(@RequestParam(defaultValue = "0") Integer from,
+                                                          @RequestParam(defaultValue = "10") Integer size) {
+        List<CategoryDto> categories = categoriesService.getCategories(from, size);
+        log.info("Список категорий получен");
+        return ResponseEntity.ok(categories);
     }
 
-    @GetMapping("/catId")
+    @GetMapping("/{catId}")
     public ResponseEntity<CategoryDto> getCategoryById(@PathVariable Integer catId) {
-        return ResponseEntity.ok(null);
+        CategoryDto categoryDto = categoriesService.getCategoryById(catId);
+        log.info("Категория получена");
+        return ResponseEntity.ok(categoryDto);
     }
 }

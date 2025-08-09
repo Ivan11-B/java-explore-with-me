@@ -17,15 +17,15 @@ public class GlobalExceptionHandler {
 //        return ResponseEntity.badRequest().body(new Error("Ошибка валидации даты", "Неверный формат даты"));
 //    }
 
-    @ExceptionHandler(UserNotFoundException.class)
-    public ResponseEntity<ApiError> handlerTimeException(UserNotFoundException ex) {
+    @ExceptionHandler(NotFoundException.class)
+    public ResponseEntity<ApiError> handlerTimeException(NotFoundException ex) {
         ApiError apiError = ApiError.builder()
                 .status(String.valueOf(HttpStatus.NOT_FOUND))
                 .message(ex.getMessage())
                 .reason("Искомый объект не был найден")
                 .timestamp(String.valueOf(LocalDateTime.now()))
                 .build();
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(apiError);
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(apiError);
     }
 
     @ExceptionHandler(UserDuplicateException.class)
