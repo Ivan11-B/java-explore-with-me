@@ -12,6 +12,6 @@ public class NewUserRequest {
     private String email;
 
     @NotBlank
-    @Size(min = 2, max = 250, message = "Имя должен быть от 2 до 250 символов")
+    @Size(min = 2, max = 250, message = "Имя должено быть от 2 до 250 символов")
     private String name;
 }

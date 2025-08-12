@@ -5,6 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import ru.practicum.dto.UpdateEventUserRequest;
 
 import java.time.LocalDateTime;
 import java.util.stream.Collectors;
@@ -17,6 +18,18 @@ public class GlobalExceptionHandler {
 //        return ResponseEntity.badRequest().body(new Error("Ошибка валидации даты", "Неверный формат даты"));
 //    }
 
+    @ExceptionHandler(NumberFormatException.class)
+    public ResponseEntity<ApiError> handlerNumberFormatException(NumberFormatException ex) {
+        ApiError apiError = ApiError.builder()
+                .status(String.valueOf(HttpStatus.BAD_REQUEST))
+                .message(ex.getMessage())
+                .reason("Передоваемый параметр должен быть числом")
+                .timestamp(String.valueOf(LocalDateTime.now()))
+                .build();
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(apiError);
+    }
+
+
     @ExceptionHandler(NotFoundException.class)
     public ResponseEntity<ApiError> handlerTimeException(NotFoundException ex) {
         ApiError apiError = ApiError.builder()
@@ -28,12 +41,12 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(apiError);
     }
 
-    @ExceptionHandler(UserDuplicateException.class)
-    public ResponseEntity<ApiError> handleDuplicateEmail(UserDuplicateException ex) {
+    @ExceptionHandler({UserDuplicateException.class, CategoryDuplicateException.class})
+    public ResponseEntity<ApiError> handleDuplicateEmail(RuntimeException ex) {
         ApiError apiError = ApiError.builder()
                 .status(String.valueOf(HttpStatus.CONFLICT))
                 .message(ex.getMessage())
-                .reason("Email уже существует")
+                .reason("Дубликат данных")
                 .timestamp(String.valueOf(LocalDateTime.now()))
                 .build();
         return ResponseEntity.status(HttpStatus.CONFLICT).body(apiError);
@@ -54,6 +67,52 @@ public class GlobalExceptionHandler {
                 .build();
         return ResponseEntity.badRequest().body(apiError);
     }
+
+    @ExceptionHandler(OwnerException.class)
+    public ResponseEntity<ApiError> handleOwnerEvent(OwnerException ex) {
+        ApiError apiError = ApiError.builder()
+                .status(String.valueOf(HttpStatus.BAD_REQUEST))
+                .message(ex.getMessage())
+                .reason("Ошибка данных")
+                .timestamp(String.valueOf(LocalDateTime.now()))
+                .build();
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(apiError);
+    }
+
+    @ExceptionHandler(UpdateConflictException.class)
+    public ResponseEntity<ApiError> handleUpdateEvent(UpdateConflictException ex) {
+        ApiError apiError = ApiError.builder()
+                .status(String.valueOf(HttpStatus.CONFLICT))
+                .message(ex.getMessage())
+                .reason("Ошибка данных")
+                .timestamp(String.valueOf(LocalDateTime.now()))
+                .build();
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(apiError);
+    }
+
+    @ExceptionHandler(ParticipationException.class)
+    public ResponseEntity<ApiError> handleUpdateEvent(ParticipationException ex) {
+        ApiError apiError = ApiError.builder()
+                .status(String.valueOf(HttpStatus.CONFLICT))
+                .message(ex.getMessage())
+                .reason("Ошибка данных")
+                .timestamp(String.valueOf(LocalDateTime.now()))
+                .build();
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(apiError);
+    }
+
+    @ExceptionHandler(DeleteCategoryException.class)
+    public ResponseEntity<ApiError> handleUpdateEvent(DeleteCategoryException ex) {
+        ApiError apiError = ApiError.builder()
+                .status(String.valueOf(HttpStatus.CONFLICT))
+                .message(ex.getMessage())
+                .reason("Существуют события, связанные с категорией")
+                .timestamp(String.valueOf(LocalDateTime.now()))
+                .build();
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(apiError);
+    }
+
+
 
 //    @ExceptionHandler(ConstraintViolationException.class)
 //    public ResponseEntity<Error> handleValidationException(ConstraintViolationException ex) {

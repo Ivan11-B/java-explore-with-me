@@ -34,9 +34,9 @@ public class AdminCategoriesController {
     }
 
     @DeleteMapping("/{catId}")
-    public ResponseEntity<String> deleteCategory(@PathVariable Integer catId) {
-        String text = categoriesService.deleteCategory(catId);
+    public ResponseEntity<Void> deleteCategory(@PathVariable Integer catId) {
+        categoriesService.deleteCategory(catId);
         log.info("Категория удалена");
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(text);
+        return ResponseEntity.noContent().build();
     }
 }
