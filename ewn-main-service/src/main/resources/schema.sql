@@ -32,13 +32,14 @@ CREATE TABLE IF NOT EXISTS events (
     user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
     lat DOUBLE PRECISION,
     lon DOUBLE PRECISION,
-    paid BOOLEAN NOT NULL DEFAULT FALSE,
+    paid BOOLEAN,
     participant_limit INTEGER,
     published_on TIMESTAMP,
-    request_moderation BOOLEAN DEFAULT TRUE,
+    request_moderation BOOLEAN,
     title varchar(255) NOT NULL,
     state varchar(255),
-    confirmed_request INTEGER
+    confirmed_request INTEGER,
+    view INTEGER
 );
 
 CREATE TABLE IF NOT EXISTS compilation_events (

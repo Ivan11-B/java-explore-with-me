@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.dto.*;
 import ru.practicum.service.EventService;
+import ru.practicum.service.ParticipationService;
 
 import java.util.List;
 
@@ -18,6 +19,7 @@ import java.util.List;
 public class PrivateEventsController {
 
     private final EventService eventService;
+    private final ParticipationService participationService;
 
     @GetMapping
     public ResponseEntity<List<EventShortDto>> getEventsUser(@PathVariable Integer userId,
@@ -38,9 +40,9 @@ public class PrivateEventsController {
     }
 
     @GetMapping("/{eventId}")
-    public ResponseEntity<EventFullDto> getFullEventById(@PathVariable Integer userId,
+    public ResponseEntity<EventFullDto> getFullEventByIdCurrentUser(@PathVariable Integer userId,
                                                          @PathVariable Integer eventId) {
-        EventFullDto eventFullDto = eventService.getFullEventByUserId(userId, eventId);
+        EventFullDto eventFullDto = eventService.getFullEventByIdCurrentUser(userId, eventId);
         log.info("Полная информация о событии, добавленного текущим пользователем получено");
         return ResponseEntity.ok(eventFullDto);
     }
@@ -49,21 +51,26 @@ public class PrivateEventsController {
     public ResponseEntity<EventFullDto> updateEvent(@PathVariable Integer userId,
                                                     @PathVariable Integer eventId,
                                                     @Valid @RequestBody UpdateEventUserRequest updateEventUserRequest) {
+        log.info("исходное dto: {}", updateEventUserRequest);
         EventFullDto eventFullDto = eventService.updateEventCurrentUser(userId, eventId, updateEventUserRequest);
         log.info("Изменено событие, добавленного текущим пользователем");
         return ResponseEntity.ok(eventFullDto);
     }
 
     @GetMapping("/{eventId}/requests")
-    public ResponseEntity<ParticipationRequestDto> getParticipation(@PathVariable Integer userId,
+    public ResponseEntity<List<ParticipationRequestDto>> getParticipation(@PathVariable Integer userId,
                                                                     @PathVariable Integer eventId) {
-        return ResponseEntity.ok(null);
+        List<ParticipationRequestDto> participationRequestDto = participationService.getAllRequestCurrentEvent(userId, eventId);
+        log.info("Информация о запросах на участие в событии текущего пользователя получена");
+        return ResponseEntity.ok(participationRequestDto);
     }
 
     @PatchMapping("/{eventId}/requests")
-    public ResponseEntity<List<ParticipationRequestDto>> update(@PathVariable Integer userId,
+    public ResponseEntity<EventRequestStatusUpdateResult> update(@PathVariable Integer userId,
                                                                 @PathVariable Integer eventId,
-                                                                @RequestBody EventRequestStatusUpdateRequest eventRequestStatusUpdateRequest) {
-        return ResponseEntity.ok(null);
+                                                                @RequestBody EventRequestStatusUpdateRequest updateRequest) {
+        EventRequestStatusUpdateResult result = participationService.updateStatus(userId, eventId, updateRequest);
+        log.info("Изменение статуса заявок на участие в событие текущего пользователя выполнено");
+        return ResponseEntity.ok(result);
     }
 }

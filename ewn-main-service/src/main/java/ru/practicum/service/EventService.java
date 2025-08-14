@@ -16,17 +16,24 @@ public interface EventService {
 
     List<EventShortDto> getEventsCurrentUser(Integer userId, Integer from, Integer size);
 
-    EventFullDto getFullEventByUserId(Integer userId, Integer eventId);
+    EventFullDto getFullEventByIdCurrentUser(Integer userId, Integer eventId);
 
     EventFullDto updateEventCurrentUser(Integer userId, Integer eventId, UpdateEventUserRequest eventUserRequest);
 
     Set<Event> getAllByIds(Set<Integer> ids);
 
-    Event getById(Integer eventId);
+    Event getEventById(Integer eventId);
 
-    List<EventFullDto> searchEvents();
+    List<EventFullDto> getFullEvents(List<Integer> users, List<String> states, List<Integer> categories, String rangeStart, String rangeEnd,
+                                     Integer from, Integer size);
 
-    EventShortDto updateEvent(Integer eventId);
+    EventFullDto updateEventAndStatus(UpdateEventUserRequest updateEventUserRequest, Integer eventId);
 
     List<Event> getEventsByCategory(Integer catId);
+
+    List<EventShortDto> getAllEventsByFilters(String text, List<Integer> categories, Boolean paid, String rangeStart, String rangeEnd,
+                                      Boolean onlyAvailable, String sort, Integer from, Integer size);
+
+    EventFullDto getPublishedEventById(Integer eventId);
+
 }

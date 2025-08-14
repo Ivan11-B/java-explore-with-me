@@ -30,7 +30,7 @@ public class Participation {
     private Integer requester;
 
     @Enumerated(value = EnumType.STRING)
-    private EventState status;
+    private StateRequest status;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")

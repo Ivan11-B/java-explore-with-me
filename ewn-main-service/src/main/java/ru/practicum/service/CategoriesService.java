@@ -14,9 +14,9 @@ public interface CategoriesService {
 
     void deleteCategory(Integer catId);
 
+    Category getCategoryById(Integer category);
+
     CategoryDto getCategoryDtoById(Integer catId);
 
     List<CategoryDto> getAllCategories(Integer from, Integer size);
-
-    Category getCategoryById(Integer category);
 }

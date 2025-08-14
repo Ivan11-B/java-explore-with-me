@@ -15,9 +15,9 @@ public interface CompilationService {
 
     void deleteCompilation(Integer compId);
 
-    List<CompilationDto> getAll(Boolean pinned, Integer from, Integer size);
-
-    CompilationDto getCompilationDtoById(Integer compId);
+    List<CompilationDto> getAllCompilation(Boolean pinned, Integer from, Integer size);
 
     Compilation getCompilationById(Integer compId);
+
+    CompilationDto getCompilationDtoById(Integer compId);
 }

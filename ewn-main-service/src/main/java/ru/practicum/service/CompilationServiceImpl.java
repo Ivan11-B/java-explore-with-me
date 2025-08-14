@@ -17,7 +17,7 @@ import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
-@Transactional
+@Transactional(readOnly = true)
 public class CompilationServiceImpl implements CompilationService {
 
     private final EventService eventService;
@@ -26,14 +26,19 @@ public class CompilationServiceImpl implements CompilationService {
 
 
     @Override
+    @Transactional
     public CompilationDto saveCompilation(NewCompilationDto newCompilationDto) {
-        Set<Event> events = eventService.getAllByIds(newCompilationDto.getEvents());
-        Compilation compilation = compilationMapper.toEntity(newCompilationDto, events);
+        Compilation compilation = compilationMapper.toEntity(newCompilationDto);
+        if (newCompilationDto.getEvents() != null) {
+            Set<Event> events = eventService.getAllByIds(newCompilationDto.getEvents());
+            compilation.setEvents(events);
+        }
         Compilation savedCompilation = compilationRepository.save(compilation);
         return compilationMapper.toDto(savedCompilation);
     }
 
     @Override
+    @Transactional
     public CompilationDto updateCompilation(UpdateCompilationRequest updateCompilation, Integer compId) {
         Compilation compilation = getCompilationById(compId);
         if (updateCompilation.getTitle() != null) {
@@ -43,21 +48,29 @@ public class CompilationServiceImpl implements CompilationService {
             compilation.setPinned(updateCompilation.getPinned());
         }
         if (updateCompilation.getEvents() != null) {
+            for (Event event : compilation.getEvents()) {
+                event.getCompilations().remove(compilation);
+            }
+            compilation.getEvents().clear();
             Set<Event> events = eventService.getAllByIds(updateCompilation.getEvents());
-            compilation.setEvents(events);
+            for (Event event : events) {
+                compilation.getEvents().add(event);
+                event.getCompilations().add(compilation);
+            }
         }
         Compilation updatedCompilation = compilationRepository.save(compilation);
         return compilationMapper.toDto(updatedCompilation);
     }
 
     @Override
+    @Transactional
     public void deleteCompilation(Integer compId) {
         isExists(compId);
         compilationRepository.deleteById(compId);
     }
 
     @Override
-    public List<CompilationDto> getAll(Boolean pinned, Integer from, Integer size) {
+    public List<CompilationDto> getAllCompilation(Boolean pinned, Integer from, Integer size) {
         List<Compilation> compilations;
         if (pinned == null) {
             compilations = compilationRepository.findAll(from, size);
@@ -68,20 +81,18 @@ public class CompilationServiceImpl implements CompilationService {
     }
 
     @Override
-    public CompilationDto getCompilationDtoById(Integer compId) {
-        Compilation compilation = compilationRepository.findById(compId)
-                .orElseThrow(() -> new NotFoundException("Подборка с id=" + compId + " не найдена"));
-        return compilationMapper.toDto(compilation);
-    }
-
-    @Override
     public Compilation getCompilationById(Integer compId) {
         return compilationRepository.findById(compId)
                 .orElseThrow(() -> new NotFoundException("Подборка с id=" + compId + " не найдена"));
     }
 
+    @Override
+    public CompilationDto getCompilationDtoById(Integer compId) {
+        return compilationMapper.toDto(getCompilationById(compId));
+    }
+
     private void isExists(Integer compId) {
-        if (compilationRepository.existsById(compId)) {
+        if (!compilationRepository.existsById(compId)) {
             throw new NotFoundException("Подборка с id=" + compId + " не найдена");
         }
     }

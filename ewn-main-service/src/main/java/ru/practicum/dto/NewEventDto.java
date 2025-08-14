@@ -1,12 +1,12 @@
 package ru.practicum.dto;
 
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Positive;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 import lombok.Builder;
 import lombok.Data;
+import org.aspectj.lang.annotation.After;
 import org.springframework.format.annotation.DateTimeFormat;
+
+import java.time.LocalDateTime;
 
 
 @Builder
@@ -32,15 +32,12 @@ public class NewEventDto {
     @NotNull
     private Location location;
 
-    @Builder.Default
-    private Boolean paid = false;
+    private Boolean paid;
 
-    @Positive(message = "Лимит участников не может быть отрицательным")
-    @Builder.Default
-    private Integer participantLimit = 0;
+    @PositiveOrZero(message = "Лимит участников не может быть отрицательным")
+    private Integer participantLimit;
 
-    @Builder.Default
-    private Boolean requestModeration = true;
+    private Boolean requestModeration;
 
     @NotBlank
     @Size(min = 3, max = 120, message = "Заголовок должен быть от 3 до 120 символов")

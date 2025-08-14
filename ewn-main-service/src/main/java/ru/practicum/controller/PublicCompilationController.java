@@ -21,7 +21,7 @@ public class PublicCompilationController {
     public ResponseEntity<List<CompilationDto>> getCompilations(@RequestParam(required = false) Boolean pinned,
                                                                 @RequestParam(defaultValue = "0") Integer from,
                                                                 @RequestParam(defaultValue = "10") Integer size) {
-        List<CompilationDto> compilations = compilationService.getAll(pinned, from, size);
+        List<CompilationDto> compilations = compilationService.getAllCompilation(pinned, from, size);
         log.info("Подборка событий предоставлена");
         return ResponseEntity.ok(compilations);
     }

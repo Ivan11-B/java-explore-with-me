@@ -21,28 +21,26 @@ public class CompilationMapper {
     private final EventMapper eventMapper;
 
 
-    public Compilation toEntity(NewCompilationDto newCompilationDto, Set<Event> events) {
+    public Compilation toEntity(NewCompilationDto newCompilationDto) {
         return Compilation.builder()
                 .title(newCompilationDto.getTitle())
                 .pinned(newCompilationDto.getPinned() != null ? newCompilationDto.getPinned() : false)
-                .events(events)
                 .build();
     }
 
-//    public Compilation toEntity(UpdateCompilationRequest updateCompilation, Set<Event> events) {
-//        return Compilation.builder()
-//                .title(updateCompilation.getTitle())
-//                .pinned(updateCompilation.getPinned() != null ? updateCompilation.getPinned() : false)
-//                .events(events)
-//                .build();
-//    }
 
     public CompilationDto toDto(Compilation compilation) {
+        Set<EventShortDto> eventShortDto;
+        if (compilation.getEvents() != null) {
+            eventShortDto = eventMapper.toShortDto(compilation.getEvents());
+        } else {
+            eventShortDto = null;
+        }
         return CompilationDto.builder()
                 .id(compilation.getId())
                 .title(compilation.getTitle())
                 .pinned(compilation.getPinned())
-                .events(eventMapper.toShortDto(compilation.getEvents()))
+                .events(eventShortDto)
                 .build();
     }
 

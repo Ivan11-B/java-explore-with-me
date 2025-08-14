@@ -1,14 +1,23 @@
 package ru.practicum.service;
 
+import ru.practicum.dto.EventRequestStatusUpdateRequest;
+import ru.practicum.dto.EventRequestStatusUpdateResult;
 import ru.practicum.dto.ParticipationRequestDto;
+import ru.practicum.model.Participation;
 
 import java.util.List;
 
 public interface ParticipationService {
 
-    List<ParticipationRequestDto> getAllCurrentUser(Integer userId);
+    List<ParticipationRequestDto> getAllRequestCurrentUser(Integer userId);
 
     ParticipationRequestDto saveRequest(Integer userId, Integer eventId);
 
-    ParticipationRequestDto updateRequest(Integer userId, Integer requestId);
+    ParticipationRequestDto cancelRequest(Integer userId, Integer requestId);
+
+    List<ParticipationRequestDto> getAllRequestCurrentEvent(Integer userId, Integer eventId);
+
+    EventRequestStatusUpdateResult updateStatus(Integer userId, Integer eventId, EventRequestStatusUpdateRequest updateRequest);
+
+    Participation getParticipationById(Integer requestId);
 }

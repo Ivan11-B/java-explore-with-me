@@ -21,7 +21,7 @@ public class AdminUsersController {
     private final UserService userService;
 
     @GetMapping
-    public ResponseEntity<List<UserDto>> getUsers(@RequestParam(name = "ids", required = false) List<Integer> ids,
+    public ResponseEntity<List<UserDto>> getUsers(@RequestParam(required = false) List<Integer> ids,
                                             @RequestParam(defaultValue = "0") Integer from,
                                             @RequestParam(defaultValue = "10") Integer size) {
         List<UserDto> users = userService.getUsers(ids, from, size);

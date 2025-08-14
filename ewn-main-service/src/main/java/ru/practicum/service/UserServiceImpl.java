@@ -43,13 +43,11 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<UserDto> getUsers(List<Integer> ids, Integer from, Integer size) {
-        List<User> users;
         if (ids == null) {
-            users = userRepository.findAllUsers(from, size);
+            return userMapper.toDtoList(userRepository.findAllUsers(from, size));
         } else {
-            users = userRepository.findUserByIds(ids, from, size);
+            return userMapper.toDtoList(userRepository.findUserByIds(ids, from, size));
         }
-        return userMapper.toDtoList(users);
     }
 
     @Override

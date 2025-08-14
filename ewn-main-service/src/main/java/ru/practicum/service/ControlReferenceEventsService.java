@@ -10,12 +10,7 @@ public class ControlReferenceEventsService {
 
     private final EventRepository eventRepository;
 
-
-    public Boolean getEventByCategory(Integer catId) {
-        if (eventRepository.findAllByCategoryId(catId).stream().count() > 0) {
-            return true;
-        } else {
-            return false;
-        }
+    public Boolean validateEventsByCategory(Integer catId) {
+       return eventRepository.existsAllByCategoryId(catId);
     }
 }

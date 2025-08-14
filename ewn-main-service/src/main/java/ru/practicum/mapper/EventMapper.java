@@ -1,15 +1,15 @@
 package ru.practicum.mapper;
 
 import lombok.RequiredArgsConstructor;
-
 import org.springframework.stereotype.Component;
-import ru.practicum.dto.*;
-
+import ru.practicum.dto.EventFullDto;
+import ru.practicum.dto.EventShortDto;
+import ru.practicum.dto.Location;
+import ru.practicum.dto.NewEventDto;
 import ru.practicum.model.Event;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -30,10 +30,12 @@ public class EventMapper {
                 .eventDate(LocalDateTime.parse(newEventDto.getEventDate(), formatter))
                 .lat(newEventDto.getLocation().getLat())
                 .lon(newEventDto.getLocation().getLon())
-                .paid(newEventDto.getPaid())
-                .participantLimit(newEventDto.getParticipantLimit())
-                .requestModeration(newEventDto.getRequestModeration())
+                .paid(newEventDto.getPaid() != null ? newEventDto.getPaid() : false)
+                .participantLimit(newEventDto.getParticipantLimit() != null ? newEventDto.getParticipantLimit() : 0)
+                .requestModeration(newEventDto.getRequestModeration() != null ? newEventDto.getRequestModeration() : true)
                 .title(newEventDto.getTitle())
+                .confirmedRequest(0)
+                .view(0)
                 .build();
     }
 
@@ -42,7 +44,7 @@ public class EventMapper {
                 .id(event.getId())
                 .annotation(event.getAnnotation())
                 .category(categoryMapper.toDto(event.getCategory()))
-//                .confirmedRequests(event.)
+                .confirmedRequests(event.getConfirmedRequest())
                 .createdOn(formatDateTime(event.getCreatedOn()))
                 .description(event.getDescription())
                 .eventDate(formatDateTime(event.getEventDate()))
@@ -57,8 +59,14 @@ public class EventMapper {
                 .requestModeration(event.getRequestModeration())
                 .state(String.valueOf(event.getState()))
                 .title(event.getTitle())
-//                .views()
+                .views(event.getView())
                 .build();
+    }
+
+    public List<EventFullDto> toFullDto(List<Event> events) {
+        return events.stream()
+                .map(this::toFullDto)
+                .collect(Collectors.toList());
     }
 
     public EventShortDto toShortDto(Event event) {
@@ -66,12 +74,12 @@ public class EventMapper {
                 .id(event.getId())
                 .annotation(event.getAnnotation())
                 .category(categoryMapper.toDto(event.getCategory()))
-//                .confirmedRequests(event.)
+                .confirmedRequests(event.getConfirmedRequest())
                 .eventDate(formatDateTime(event.getEventDate()))
                 .initiator(userMapper.toShortDto(event.getInitiator()))
                 .paid(event.getPaid())
                 .title(event.getTitle())
-//                .views()
+                .views(event.getView())
                 .build();
     }
 
@@ -87,7 +95,6 @@ public class EventMapper {
                 .collect(Collectors.toSet());
     }
 
-
     private String formatDateTime(LocalDateTime localDateTime) {
         if (localDateTime != null) {
             return localDateTime.format(formatter);
@@ -95,7 +102,4 @@ public class EventMapper {
             return null;
         }
     }
-
-
-
 }

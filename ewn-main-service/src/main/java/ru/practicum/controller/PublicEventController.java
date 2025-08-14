@@ -1,30 +1,42 @@
 package ru.practicum.controller;
 
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import ru.practicum.dto.EventFullDto;
 import ru.practicum.dto.EventShortDto;
+import ru.practicum.service.EventService;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/events")
+@RequiredArgsConstructor
+@Slf4j
 public class PublicEventController {
 
+    private final EventService eventService;
+
     @GetMapping
-    public ResponseEntity<List<EventShortDto>> getEvents(@RequestParam String text,
-                                                         @RequestParam List<Integer> categories,
-                                                         @RequestParam Boolean paid,
-                                                         @RequestParam String rangeStart,
-                                                         @RequestParam String rangeEnd,
-                                                         @RequestParam Boolean onlyAvailable,
-                                                         @RequestParam String sort,
-                                                         @RequestParam Integer from,
-                                                         @RequestParam Integer size) {
-        return ResponseEntity.ok(null);
+    public ResponseEntity<List<EventShortDto>> getEvents(@RequestParam(required = false) String text,
+                                                         @RequestParam(required = false) List<Integer> categories,
+                                                         @RequestParam(required = false) Boolean paid,
+                                                         @RequestParam(required = false) String rangeStart,
+                                                         @RequestParam(required = false) String rangeEnd,
+                                                         @RequestParam(defaultValue = "false") Boolean onlyAvailable,
+                                                         @RequestParam(required = false) String sort,
+                                                         @RequestParam(defaultValue = "0") Integer from,
+                                                         @RequestParam(defaultValue = "10") Integer size) {
+        List<EventShortDto> events = eventService.getAllEventsByFilters(text, categories, paid, rangeStart, rangeEnd, onlyAvailable, sort, from, size);
+        log.info("События с фильтрацией предоставлены");
+        return ResponseEntity.ok(events);
     }
 
     @GetMapping("/{eventId}")
-    public ResponseEntity<EventShortDto> getEventById(@PathVariable Integer eventId) {
-        return ResponseEntity.ok(null);
+    public ResponseEntity<EventFullDto> getEventById(@PathVariable Integer eventId) {
+        EventFullDto eventFullDto = eventService.getPublishedEventById(eventId);
+        log.info("Опубликованное событие получено");
+        return ResponseEntity.ok(eventFullDto);
     }
 }

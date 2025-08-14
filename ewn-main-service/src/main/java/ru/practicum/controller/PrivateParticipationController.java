@@ -20,7 +20,7 @@ public class PrivateParticipationController {
 
     @GetMapping
     public ResponseEntity<List<ParticipationRequestDto>> getRequests(@PathVariable Integer userId) {
-        List<ParticipationRequestDto> participationRequestDtos = participationService.getAllCurrentUser(userId);
+        List<ParticipationRequestDto> participationRequestDtos = participationService.getAllRequestCurrentUser(userId);
         log.info("Список текущих заявок пользователя получен");
         return ResponseEntity.ok(participationRequestDtos);
     }
@@ -34,9 +34,9 @@ public class PrivateParticipationController {
     }
 
     @PatchMapping("/{requestId}/cancel")
-    public ResponseEntity<ParticipationRequestDto> updateRequest(@PathVariable Integer userId,
+    public ResponseEntity<ParticipationRequestDto> cancelRequest(@PathVariable Integer userId,
                                                                  @PathVariable Integer requestId) {
-        ParticipationRequestDto participationRequestDto = participationService.updateRequest(userId, requestId);
+        ParticipationRequestDto participationRequestDto = participationService.cancelRequest(userId, requestId);
         log.info("Отмена своего запроса на участие в событии выполнена");
         return ResponseEntity.ok(participationRequestDto);
     }

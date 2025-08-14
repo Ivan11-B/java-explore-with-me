@@ -53,11 +53,17 @@ public class CategoriesServiceImpl implements CategoriesService {
     @Transactional
     public void deleteCategory(Integer catId) {
         isExistsCategory(catId);
-        if (!controlReferenceEventsService.getEventByCategory(catId)) {
+        if (!controlReferenceEventsService.validateEventsByCategory(catId)) {
             categoriesRepository.deleteById(catId);
         } else {
             throw new DeleteCategoryException("Данная категории имеет привязанные события");
         }
+    }
+
+    @Override
+    public Category getCategoryById(Integer catId) {
+        return categoriesRepository.findById(catId)
+                .orElseThrow(() -> new NotFoundException("Категория с id=" + catId + " не найдена"));
     }
 
     @Override
@@ -69,12 +75,6 @@ public class CategoriesServiceImpl implements CategoriesService {
     public List<CategoryDto> getAllCategories(Integer from, Integer size) {
         List<Category> categories = categoriesRepository.findAllCategories(from, size);
         return categoryMapper.toDtoList(categories);
-    }
-
-    @Override
-    public Category getCategoryById(Integer catId) {
-        return categoriesRepository.findById(catId)
-                .orElseThrow(() -> new NotFoundException("Категория с id=" + catId + " не найдена"));
     }
 
     private void isExistsCategory(Integer catId) {

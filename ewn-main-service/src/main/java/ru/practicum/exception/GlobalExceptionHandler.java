@@ -5,7 +5,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import ru.practicum.dto.UpdateEventUserRequest;
 
 import java.time.LocalDateTime;
 import java.util.stream.Collectors;
@@ -68,8 +67,8 @@ public class GlobalExceptionHandler {
         return ResponseEntity.badRequest().body(apiError);
     }
 
-    @ExceptionHandler(OwnerException.class)
-    public ResponseEntity<ApiError> handleOwnerEvent(OwnerException ex) {
+    @ExceptionHandler(OwnerEventException.class)
+    public ResponseEntity<ApiError> handleOwnerEvent(OwnerEventException ex) {
         ApiError apiError = ApiError.builder()
                 .status(String.valueOf(HttpStatus.BAD_REQUEST))
                 .message(ex.getMessage())
@@ -110,6 +109,17 @@ public class GlobalExceptionHandler {
                 .timestamp(String.valueOf(LocalDateTime.now()))
                 .build();
         return ResponseEntity.status(HttpStatus.CONFLICT).body(apiError);
+    }
+
+    @ExceptionHandler(EventDateException.class)
+    public ResponseEntity<ApiError> handleUpdateEvent(EventDateException ex) {
+        ApiError apiError = ApiError.builder()
+                .status(String.valueOf(HttpStatus.BAD_REQUEST))
+                .message(ex.getMessage())
+                .reason("Событие не удовлетворяет правилам создания")
+                .timestamp(String.valueOf(LocalDateTime.now()))
+                .build();
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(apiError);
     }
 
 
