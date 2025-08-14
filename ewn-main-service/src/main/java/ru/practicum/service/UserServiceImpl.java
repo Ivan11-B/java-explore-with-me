@@ -36,7 +36,7 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public void deleteUser(Integer userId) {
         if (!userRepository.existsById(userId)) {
-            new NotFoundException("User с id=" + userId + " не найден");
+            throw new NotFoundException("User с id=" + userId + " не найден");
         }
         userRepository.deleteById(userId);
     }

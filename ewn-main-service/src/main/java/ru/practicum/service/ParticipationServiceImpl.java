@@ -43,13 +43,13 @@ public class ParticipationServiceImpl implements ParticipationService {
         }
         User user = userService.getUserById(userId);
         Event event = eventService.getEventById(eventId);
-        if (user.getId() == event.getInitiator().getId()) {
+        if (user.getId().equals(event.getInitiator().getId())) {
             throw new ParticipationException("Инициатор события не может добавлять запрос на участие в своем событии");
         }
         if (event.getState() != EventState.PUBLISHED) {
             throw new ParticipationException("Данное событие не опубликованно");
         }
-        if (event.getParticipantLimit() != 0 && event.getParticipantLimit() == event.getConfirmedRequest()) {
+        if (event.getParticipantLimit() != 0 && event.getParticipantLimit().equals(event.getConfirmedRequest())) {
             throw new ParticipationException("Достигнут лимит на участие");
         }
         Participation participation = Participation.builder()
@@ -127,7 +127,7 @@ public class ParticipationServiceImpl implements ParticipationService {
     }
 
     private EventRequestStatusUpdateResult confirmRequests(Event event, List<Participation> participation) {
-        if (event.getParticipantLimit() != 0 && event.getParticipantLimit() == event.getConfirmedRequest()) {
+        if (event.getParticipantLimit() != 0 && event.getParticipantLimit().equals(event.getConfirmedRequest())) {
             throw new ParticipationException("Достигнут лимит по заявкам на данное событие");
         }
         Integer availableSlots = event.getParticipantLimit() - event.getConfirmedRequest();
