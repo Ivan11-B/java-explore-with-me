@@ -7,7 +7,6 @@ import ru.practicum.dto.EventRequestStatusUpdateRequest;
 import ru.practicum.dto.EventRequestStatusUpdateResult;
 import ru.practicum.dto.ParticipationRequestDto;
 import ru.practicum.exception.NotFoundException;
-import ru.practicum.exception.OwnerEventException;
 import ru.practicum.exception.ParticipationException;
 import ru.practicum.mapper.ParticipationMapper;
 import ru.practicum.model.*;
@@ -16,7 +15,6 @@ import ru.practicum.repository.ParticipationRepository;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -70,11 +68,8 @@ public class ParticipationServiceImpl implements ParticipationService {
     @Override
     @Transactional
     public ParticipationRequestDto cancelRequest(Integer userId, Integer requestId) {
-        User user = userService.getUserById(userId);
+        userService.getUserById(userId);
         Participation participation = getParticipationById(requestId);
-//        if (user.getId() != participation.getRequester()) {
-//            throw new ParticipationException("Пользователь не владелец запроса");
-//        }
         if (participation.getStatus() == StateRequest.CONFIRMED) {
             Event event = eventService.getEventById(participation.getEvent());
             event.setConfirmedRequest(event.getConfirmedRequest() - 1);
@@ -113,9 +108,6 @@ public class ParticipationServiceImpl implements ParticipationService {
     private Event validateOwnerEvent(Integer userId, Integer eventId) {
         userService.getUserById(userId);
         Event event = eventService.getEventById(eventId);
-//        if (userId != event.getInitiator().getId()) {
-//            throw new OwnerEventException("User не является инициатором события");
-//        }
         return event;
     }
 

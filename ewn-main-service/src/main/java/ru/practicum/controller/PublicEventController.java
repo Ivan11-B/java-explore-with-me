@@ -1,5 +1,6 @@
 package ru.practicum.controller;
 
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -27,15 +28,16 @@ public class PublicEventController {
                                                          @RequestParam(defaultValue = "false") Boolean onlyAvailable,
                                                          @RequestParam(required = false) String sort,
                                                          @RequestParam(defaultValue = "0") Integer from,
-                                                         @RequestParam(defaultValue = "10") Integer size) {
-        List<EventShortDto> events = eventService.getAllEventsByFilters(text, categories, paid, rangeStart, rangeEnd, onlyAvailable, sort, from, size);
+                                                         @RequestParam(defaultValue = "10") Integer size,
+                                                         HttpServletRequest request) {
+        List<EventShortDto> events = eventService.getAllEventsByFilters(text, categories, paid, rangeStart, rangeEnd, onlyAvailable, sort, from, size, request);
         log.info("События с фильтрацией предоставлены");
         return ResponseEntity.ok(events);
     }
 
     @GetMapping("/{eventId}")
-    public ResponseEntity<EventFullDto> getEventById(@PathVariable Integer eventId) {
-        EventFullDto eventFullDto = eventService.getPublishedEventById(eventId);
+    public ResponseEntity<EventFullDto> getEventById(@PathVariable Integer eventId, HttpServletRequest request) {
+        EventFullDto eventFullDto = eventService.getPublishedEventById(eventId, request);
         log.info("Опубликованное событие получено");
         return ResponseEntity.ok(eventFullDto);
     }

@@ -5,7 +5,6 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
-
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
@@ -67,5 +66,5 @@ public class Event {
     @ManyToMany(mappedBy = "events")
     private Set<Compilation> compilations = new HashSet<>();
 
-    private Integer view;
+    private Long views;
 }

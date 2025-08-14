@@ -8,6 +8,9 @@ logging:
     org.springframework.web.client.RestTemplate: DEBUG
     org.hibernate:SQL: DEBUG
     org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+    logging:
+      level:
+        root=DEBUG:
 
 
 spring:
@@ -20,3 +23,6 @@ spring:
   sql:
     init:
       mode: always
+
+stats-server:
+  url: http://stats-server:9090

@@ -19,7 +19,7 @@ public class PublicCategoriesController {
 
     @GetMapping
     public ResponseEntity<List<CategoryDto>> getCategories(@RequestParam(defaultValue = "0") Integer from,
-                                                          @RequestParam(defaultValue = "10") Integer size) {
+                                                           @RequestParam(defaultValue = "10") Integer size) {
         List<CategoryDto> categories = categoriesService.getAllCategories(from, size);
         log.info("Список категорий получен");
         return ResponseEntity.ok(categories);

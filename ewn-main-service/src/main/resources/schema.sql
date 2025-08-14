@@ -39,7 +39,7 @@ CREATE TABLE IF NOT EXISTS events (
     title varchar(255) NOT NULL,
     state varchar(255),
     confirmed_request INTEGER,
-    view INTEGER
+    views BIGINT
 );
 
 CREATE TABLE IF NOT EXISTS compilation_events (

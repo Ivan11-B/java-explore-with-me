@@ -12,11 +12,6 @@ import java.util.stream.Collectors;
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
-//    @ExceptionHandler(HttpMessageNotReadableException.class)
-//    public ResponseEntity<Error> handleValidationException(HttpMessageNotReadableException ex) {
-//        return ResponseEntity.badRequest().body(new Error("Ошибка валидации даты", "Неверный формат даты"));
-//    }
-
     @ExceptionHandler(NumberFormatException.class)
     public ResponseEntity<ApiError> handlerNumberFormatException(NumberFormatException ex) {
         ApiError apiError = ApiError.builder()
@@ -121,26 +116,4 @@ public class GlobalExceptionHandler {
                 .build();
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(apiError);
     }
-
-
-
-//    @ExceptionHandler(ConstraintViolationException.class)
-//    public ResponseEntity<Error> handleValidationException(ConstraintViolationException ex) {
-//        String message = String.join(",", ex.getConstraintViolations().stream()
-//                .map(v -> v.getMessage())
-//                .collect(Collectors.toList()));
-//
-//        return ResponseEntity.badRequest().body(new Error("Ошибка валидации", message));
-//    }
-
-//    @ExceptionHandler(IntervalTimeException.class)
-//    public ResponseEntity<Error> handlerTimeException(IntervalTimeException ex) {
-//        return ResponseEntity.badRequest().body(new Error("Ошибка временного интервала", ex.getMessage()));
-//    }
-
-//    @ExceptionHandler(Exception.class)
-//    public ResponseEntity<Error> handleAllExceptions(Exception ex) {
-//        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-//                .body(new Error("INTERNAL_ERROR", "Внутренняя ошибка сервера"));
-//    }
 }

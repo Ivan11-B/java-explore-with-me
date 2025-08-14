@@ -17,7 +17,7 @@ public interface CategoriesRepository extends JpaRepository<Category, Integer> {
             LIMIT :size OFFSET :from""",
             nativeQuery = true)
     List<Category> findAllCategories(@Param("from") Integer from,
-                            @Param("size") Integer size);
+                                     @Param("size") Integer size);
 
     Boolean existsByNameAndIdNot(String name, Integer catId);
 }

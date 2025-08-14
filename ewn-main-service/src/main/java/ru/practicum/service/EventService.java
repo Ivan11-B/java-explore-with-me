@@ -1,7 +1,7 @@
 package ru.practicum.service;
 
+import jakarta.servlet.http.HttpServletRequest;
 import ru.practicum.dto.EventFullDto;
-
 import ru.practicum.dto.EventShortDto;
 import ru.practicum.dto.NewEventDto;
 import ru.practicum.dto.UpdateEventUserRequest;
@@ -32,8 +32,8 @@ public interface EventService {
     List<Event> getEventsByCategory(Integer catId);
 
     List<EventShortDto> getAllEventsByFilters(String text, List<Integer> categories, Boolean paid, String rangeStart, String rangeEnd,
-                                      Boolean onlyAvailable, String sort, Integer from, Integer size);
+                                              Boolean onlyAvailable, String sort, Integer from, Integer size, HttpServletRequest request);
 
-    EventFullDto getPublishedEventById(Integer eventId);
+    EventFullDto getPublishedEventById(Integer eventId, HttpServletRequest request);
 
 }

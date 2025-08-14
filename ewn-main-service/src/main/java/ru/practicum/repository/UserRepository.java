@@ -27,5 +27,5 @@ public interface UserRepository extends JpaRepository<User, Integer> {
             LIMIT :size OFFSET :from""",
             nativeQuery = true)
     List<User> findAllUsers(@Param("from") Integer from,
-                             @Param("size") Integer size);
+                            @Param("size") Integer size);
 }

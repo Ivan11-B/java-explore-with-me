@@ -1,22 +1,17 @@
 package ru.practicum.mapper;
 
-import jakarta.persistence.Column;
-import org.mapstruct.Mapper;
 import org.springframework.stereotype.Component;
 import ru.practicum.dto.ParticipationRequestDto;
+import ru.practicum.model.Constants;
 import ru.practicum.model.Participation;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
 
 
 @Component
 public class ParticipationMapper {
-
-    private final DateTimeFormatter formatter =
-            DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
     public ParticipationRequestDto toDto(Participation participation) {
         return ParticipationRequestDto.builder()
@@ -29,14 +24,14 @@ public class ParticipationMapper {
     }
 
     public List<ParticipationRequestDto> toDto(List<Participation> participation) {
-        return  participation.stream()
+        return participation.stream()
                 .map(this::toDto)
                 .collect(Collectors.toList());
     }
 
     private String formatDateTime(LocalDateTime localDateTime) {
         if (localDateTime != null) {
-            return localDateTime.format(formatter);
+            return localDateTime.format(Constants.DATE_TIME_FORMATTER);
         } else {
             return null;
         }

@@ -11,6 +11,6 @@ public class ControlReferenceEventsService {
     private final EventRepository eventRepository;
 
     public Boolean validateEventsByCategory(Integer catId) {
-       return eventRepository.existsAllByCategoryId(catId);
+        return eventRepository.existsAllByCategoryId(catId);
     }
 }

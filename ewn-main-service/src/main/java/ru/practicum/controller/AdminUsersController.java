@@ -22,8 +22,8 @@ public class AdminUsersController {
 
     @GetMapping
     public ResponseEntity<List<UserDto>> getUsers(@RequestParam(required = false) List<Integer> ids,
-                                            @RequestParam(defaultValue = "0") Integer from,
-                                            @RequestParam(defaultValue = "10") Integer size) {
+                                                  @RequestParam(defaultValue = "0") Integer from,
+                                                  @RequestParam(defaultValue = "10") Integer size) {
         List<UserDto> users = userService.getUsers(ids, from, size);
         log.info("Список пользователей получен");
         return ResponseEntity.ok(users);

@@ -23,8 +23,8 @@ public class PrivateEventsController {
 
     @GetMapping
     public ResponseEntity<List<EventShortDto>> getEventsUser(@PathVariable Integer userId,
-                                                       @RequestParam(defaultValue = "0") Integer from,
-                                                       @RequestParam(defaultValue = "10") Integer size) {
+                                                             @RequestParam(defaultValue = "0") Integer from,
+                                                             @RequestParam(defaultValue = "10") Integer size) {
         List<EventShortDto> events = eventService.getEventsCurrentUser(userId, from, size);
         log.info("Список событий, добавленных текущим пользователем получен");
         return ResponseEntity.ok(events);
@@ -41,7 +41,7 @@ public class PrivateEventsController {
 
     @GetMapping("/{eventId}")
     public ResponseEntity<EventFullDto> getFullEventByIdCurrentUser(@PathVariable Integer userId,
-                                                         @PathVariable Integer eventId) {
+                                                                    @PathVariable Integer eventId) {
         EventFullDto eventFullDto = eventService.getFullEventByIdCurrentUser(userId, eventId);
         log.info("Полная информация о событии, добавленного текущим пользователем получено");
         return ResponseEntity.ok(eventFullDto);
@@ -59,7 +59,7 @@ public class PrivateEventsController {
 
     @GetMapping("/{eventId}/requests")
     public ResponseEntity<List<ParticipationRequestDto>> getParticipation(@PathVariable Integer userId,
-                                                                    @PathVariable Integer eventId) {
+                                                                          @PathVariable Integer eventId) {
         List<ParticipationRequestDto> participationRequestDto = participationService.getAllRequestCurrentEvent(userId, eventId);
         log.info("Информация о запросах на участие в событии текущего пользователя получена");
         return ResponseEntity.ok(participationRequestDto);
@@ -67,8 +67,8 @@ public class PrivateEventsController {
 
     @PatchMapping("/{eventId}/requests")
     public ResponseEntity<EventRequestStatusUpdateResult> update(@PathVariable Integer userId,
-                                                                @PathVariable Integer eventId,
-                                                                @RequestBody EventRequestStatusUpdateRequest updateRequest) {
+                                                                 @PathVariable Integer eventId,
+                                                                 @RequestBody EventRequestStatusUpdateRequest updateRequest) {
         EventRequestStatusUpdateResult result = participationService.updateStatus(userId, eventId, updateRequest);
         log.info("Изменение статуса заявок на участие в событие текущего пользователя выполнено");
         return ResponseEntity.ok(result);

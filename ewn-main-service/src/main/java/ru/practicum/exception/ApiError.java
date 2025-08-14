@@ -16,7 +16,4 @@ public class ApiError {
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private String timestamp;
-
-//    private List<Error> errors;
-
 }

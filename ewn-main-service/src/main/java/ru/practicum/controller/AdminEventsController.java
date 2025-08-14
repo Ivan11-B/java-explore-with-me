@@ -21,12 +21,12 @@ public class AdminEventsController {
 
     @GetMapping
     public ResponseEntity<List<EventFullDto>> getFullEvents(@RequestParam(required = false) List<Integer> users,
-                                                        @RequestParam(required = false) List<String> states,
-                                                        @RequestParam(required = false) List<Integer> categories,
-                                                        @RequestParam(required = false) String rangeStart,
-                                                        @RequestParam(required = false) String rangeEnd,
-                                                        @RequestParam(defaultValue = "0") Integer from,
-                                                        @RequestParam(defaultValue = "10") Integer size) {
+                                                            @RequestParam(required = false) List<String> states,
+                                                            @RequestParam(required = false) List<Integer> categories,
+                                                            @RequestParam(required = false) String rangeStart,
+                                                            @RequestParam(required = false) String rangeEnd,
+                                                            @RequestParam(defaultValue = "0") Integer from,
+                                                            @RequestParam(defaultValue = "10") Integer size) {
         List<EventFullDto> events = eventService.getFullEvents(users, states, categories, rangeStart, rangeEnd, from, size);
         log.info("Список событий получен");
         return ResponseEntity.ok(events);

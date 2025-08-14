@@ -6,10 +6,10 @@ import ru.practicum.dto.EventFullDto;
 import ru.practicum.dto.EventShortDto;
 import ru.practicum.dto.Location;
 import ru.practicum.dto.NewEventDto;
+import ru.practicum.model.Constants;
 import ru.practicum.model.Event;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -20,14 +20,11 @@ public class EventMapper {
     private final CategoryMapper categoryMapper;
     private final UserMapper userMapper;
 
-    private final DateTimeFormatter formatter =
-            DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-
     public Event toEntity(NewEventDto newEventDto) {
         return Event.builder()
                 .annotation(newEventDto.getAnnotation())
                 .description(newEventDto.getDescription())
-                .eventDate(LocalDateTime.parse(newEventDto.getEventDate(), formatter))
+                .eventDate(LocalDateTime.parse(newEventDto.getEventDate(), Constants.DATE_TIME_FORMATTER))
                 .lat(newEventDto.getLocation().getLat())
                 .lon(newEventDto.getLocation().getLon())
                 .paid(newEventDto.getPaid() != null ? newEventDto.getPaid() : false)
@@ -35,7 +32,7 @@ public class EventMapper {
                 .requestModeration(newEventDto.getRequestModeration() != null ? newEventDto.getRequestModeration() : true)
                 .title(newEventDto.getTitle())
                 .confirmedRequest(0)
-                .view(0)
+                .views(0L)
                 .build();
     }
 
@@ -59,7 +56,7 @@ public class EventMapper {
                 .requestModeration(event.getRequestModeration())
                 .state(String.valueOf(event.getState()))
                 .title(event.getTitle())
-                .views(event.getView())
+                .views(event.getViews())
                 .build();
     }
 
@@ -79,7 +76,7 @@ public class EventMapper {
                 .initiator(userMapper.toShortDto(event.getInitiator()))
                 .paid(event.getPaid())
                 .title(event.getTitle())
-                .views(event.getView())
+                .views(event.getViews())
                 .build();
     }
 
@@ -97,7 +94,7 @@ public class EventMapper {
 
     private String formatDateTime(LocalDateTime localDateTime) {
         if (localDateTime != null) {
-            return localDateTime.format(formatter);
+            return localDateTime.format(Constants.DATE_TIME_FORMATTER);
         } else {
             return null;
         }
