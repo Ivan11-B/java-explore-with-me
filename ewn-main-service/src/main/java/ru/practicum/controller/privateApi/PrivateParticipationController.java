@@ -1,4 +1,4 @@
-package ru.practicum.controller;
+package ru.practicum.controller.privateApi;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,8 +19,8 @@ public class PrivateParticipationController {
     private final ParticipationService participationService;
 
     @GetMapping
-    public ResponseEntity<List<ParticipationRequestDto>> getRequests(@PathVariable Integer userId) {
-        List<ParticipationRequestDto> participationRequestDtos = participationService.getAllRequestCurrentUser(userId);
+    public ResponseEntity<List<ParticipationRequestDto>> getUserParticipation(@PathVariable Integer userId) {
+        List<ParticipationRequestDto> participationRequestDtos = participationService.getUserParticipation(userId);
         log.info("Список текущих заявок пользователя получен");
         return ResponseEntity.ok(participationRequestDtos);
     }

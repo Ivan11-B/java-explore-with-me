@@ -24,8 +24,6 @@ public interface EventRepository extends JpaRepository<Event, Integer> {
 
     Boolean existsAllByCategoryId(Integer catId);
 
-    List<Event> findAllByCategoryId(Integer catId);
-
     @Query(value = """
             SELECT * FROM events
             WHERE (CAST(:users AS TEXT) IS NULL OR user_id IN (:users))
@@ -68,6 +66,4 @@ public interface EventRepository extends JpaRepository<Event, Integer> {
                                       @Param("sort") String sort,
                                       @Param("from") Integer from,
                                       @Param("size") Integer size);
-
-
 }

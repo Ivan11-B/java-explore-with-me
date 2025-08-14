@@ -3,7 +3,7 @@ package ru.practicum.dto;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
-import ru.practicum.model.StateAction;
+import ru.practicum.model.enums.StateAction;
 
 @Data
 public class UpdateEventAdminRequest {

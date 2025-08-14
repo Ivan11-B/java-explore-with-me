@@ -23,7 +23,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public UserDto save(NewUserRequest newUserRequest) {
+    public UserDto saveUser(NewUserRequest newUserRequest) {
         User user = userMapper.toEntity(newUserRequest);
         try {
             return userMapper.toDto(userRepository.save(user));
@@ -34,7 +34,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public void delete(Integer userId) {
+    public void deleteUser(Integer userId) {
         if (!userRepository.existsById(userId)) {
             new NotFoundException("User с id=" + userId + " не найден");
         }

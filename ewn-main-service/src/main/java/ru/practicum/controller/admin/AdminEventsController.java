@@ -1,4 +1,4 @@
-package ru.practicum.controller;
+package ru.practicum.controller.admin;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -20,23 +20,23 @@ public class AdminEventsController {
     private final EventService eventService;
 
     @GetMapping
-    public ResponseEntity<List<EventFullDto>> getFullEvents(@RequestParam(required = false) List<Integer> users,
+    public ResponseEntity<List<EventFullDto>> getEventsForAdmin(@RequestParam(required = false) List<Integer> users,
                                                             @RequestParam(required = false) List<String> states,
                                                             @RequestParam(required = false) List<Integer> categories,
                                                             @RequestParam(required = false) String rangeStart,
                                                             @RequestParam(required = false) String rangeEnd,
                                                             @RequestParam(defaultValue = "0") Integer from,
                                                             @RequestParam(defaultValue = "10") Integer size) {
-        List<EventFullDto> events = eventService.getFullEvents(users, states, categories, rangeStart, rangeEnd, from, size);
+        List<EventFullDto> events = eventService.getEventsForAdmin(users, states, categories, rangeStart, rangeEnd, from, size);
         log.info("Список событий получен");
         return ResponseEntity.ok(events);
     }
 
     @PatchMapping("/{eventId}")
-    public ResponseEntity<EventFullDto> update(@PathVariable Integer eventId,
+    public ResponseEntity<EventFullDto> updateEventAdmin(@PathVariable Integer eventId,
                                                @Valid @RequestBody UpdateEventUserRequest updateEventUserRequest) {
         log.info("Обновленные данные: {}", updateEventUserRequest);
-        EventFullDto event = eventService.updateEventAndStatus(updateEventUserRequest, eventId);
+        EventFullDto event = eventService.updateEventAdmin(updateEventUserRequest, eventId);
         log.info("Cобытие обновлено");
         return ResponseEntity.ok(event);
     }

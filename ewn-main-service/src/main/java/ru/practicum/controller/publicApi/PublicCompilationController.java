@@ -1,4 +1,4 @@
-package ru.practicum.controller;
+package ru.practicum.controller.publicApi;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -18,7 +18,7 @@ public class PublicCompilationController {
     private final CompilationService compilationService;
 
     @GetMapping
-    public ResponseEntity<List<CompilationDto>> getCompilations(@RequestParam(required = false) Boolean pinned,
+    public ResponseEntity<List<CompilationDto>> getAllCompilations(@RequestParam(required = false) Boolean pinned,
                                                                 @RequestParam(defaultValue = "0") Integer from,
                                                                 @RequestParam(defaultValue = "10") Integer size) {
         List<CompilationDto> compilations = compilationService.getAllCompilation(pinned, from, size);

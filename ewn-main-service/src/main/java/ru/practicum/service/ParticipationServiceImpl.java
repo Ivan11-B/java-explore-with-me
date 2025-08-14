@@ -10,6 +10,8 @@ import ru.practicum.exception.NotFoundException;
 import ru.practicum.exception.ParticipationException;
 import ru.practicum.mapper.ParticipationMapper;
 import ru.practicum.model.*;
+import ru.practicum.model.enums.EventState;
+import ru.practicum.model.enums.StateRequest;
 import ru.practicum.repository.ParticipationRepository;
 
 import java.time.LocalDateTime;
@@ -28,7 +30,7 @@ public class ParticipationServiceImpl implements ParticipationService {
     private final EventService eventService;
 
     @Override
-    public List<ParticipationRequestDto> getAllRequestCurrentUser(Integer userId) {
+    public List<ParticipationRequestDto> getUserParticipation(Integer userId) {
         List<Participation> participation = participationRepository.findAllByRequester(userId);
         return participationMapper.toDto(participation);
     }
@@ -80,7 +82,7 @@ public class ParticipationServiceImpl implements ParticipationService {
     }
 
     @Override
-    public List<ParticipationRequestDto> getAllRequestCurrentEvent(Integer userId, Integer eventId) {
+    public List<ParticipationRequestDto> getAllParticipation(Integer userId, Integer eventId) {
         validateOwnerEvent(userId, eventId);
         List<Participation> participation = participationRepository.findAllByEvent(eventId);
         return participationMapper.toDto(participation);
@@ -88,7 +90,7 @@ public class ParticipationServiceImpl implements ParticipationService {
 
     @Override
     @Transactional
-    public EventRequestStatusUpdateResult updateStatus(Integer userId, Integer eventId, EventRequestStatusUpdateRequest updateRequest) {
+    public EventRequestStatusUpdateResult updateStatusParticipation(Integer userId, Integer eventId, EventRequestStatusUpdateRequest updateRequest) {
         Event event = validateOwnerEvent(userId, eventId);
         StateRequest status = StateRequest.valueOf(updateRequest.getStatus());
         List<Participation> participation = participationRepository.findAllById(updateRequest.getRequestIds());

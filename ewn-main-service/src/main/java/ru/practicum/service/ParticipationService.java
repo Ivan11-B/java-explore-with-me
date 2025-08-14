@@ -9,15 +9,15 @@ import java.util.List;
 
 public interface ParticipationService {
 
-    List<ParticipationRequestDto> getAllRequestCurrentUser(Integer userId);
+    List<ParticipationRequestDto> getUserParticipation(Integer userId);
 
     ParticipationRequestDto saveRequest(Integer userId, Integer eventId);
 
     ParticipationRequestDto cancelRequest(Integer userId, Integer requestId);
 
-    List<ParticipationRequestDto> getAllRequestCurrentEvent(Integer userId, Integer eventId);
+    List<ParticipationRequestDto> getAllParticipation(Integer userId, Integer eventId);
 
-    EventRequestStatusUpdateResult updateStatus(Integer userId, Integer eventId, EventRequestStatusUpdateRequest updateRequest);
+    EventRequestStatusUpdateResult updateStatusParticipation(Integer userId, Integer eventId, EventRequestStatusUpdateRequest updateRequest);
 
     Participation getParticipationById(Integer requestId);
 }

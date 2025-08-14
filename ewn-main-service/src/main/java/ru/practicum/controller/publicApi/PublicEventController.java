@@ -1,4 +1,4 @@
-package ru.practicum.controller;
+package ru.practicum.controller.publicApi;
 
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -30,7 +30,7 @@ public class PublicEventController {
                                                          @RequestParam(defaultValue = "0") Integer from,
                                                          @RequestParam(defaultValue = "10") Integer size,
                                                          HttpServletRequest request) {
-        List<EventShortDto> events = eventService.getAllEventsByFilters(text, categories, paid, rangeStart, rangeEnd, onlyAvailable, sort, from, size, request);
+        List<EventShortDto> events = eventService.getEventsPublic(text, categories, paid, rangeStart, rangeEnd, onlyAvailable, sort, from, size, request);
         log.info("События с фильтрацией предоставлены");
         return ResponseEntity.ok(events);
     }

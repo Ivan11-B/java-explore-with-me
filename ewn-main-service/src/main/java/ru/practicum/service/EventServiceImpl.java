@@ -21,6 +21,8 @@ import ru.practicum.exception.NotFoundException;
 import ru.practicum.exception.UpdateConflictException;
 import ru.practicum.mapper.EventMapper;
 import ru.practicum.model.*;
+import ru.practicum.model.enums.EventState;
+import ru.practicum.model.enums.StateAction;
 import ru.practicum.repository.EventRepository;
 
 import java.time.LocalDateTime;
@@ -60,20 +62,20 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    public List<EventShortDto> getEventsCurrentUser(Integer userId, Integer from, Integer size) {
+    public List<EventShortDto> getUserAllEvents(Integer userId, Integer from, Integer size) {
         List<Event> events = eventRepository.findAllByInitiator(userId, from, size);
         return eventMapper.toShortDto(events);
     }
 
     @Override
-    public EventFullDto getFullEventByIdCurrentUser(Integer userId, Integer eventId) {
+    public EventFullDto getUserEvent(Integer userId, Integer eventId) {
         Event event = validateOwnerEventAndReturn(userId, eventId);
         return eventMapper.toFullDto(event);
     }
 
     @Override
     @Transactional
-    public EventFullDto updateEventCurrentUser(Integer userId, Integer eventId, UpdateEventUserRequest updateEvent) {
+    public EventFullDto updateUserEvent(Integer userId, Integer eventId, UpdateEventUserRequest updateEvent) {
         Event event = validateOwnerEventAndReturn(userId, eventId);
         if (event.getState() == EventState.PUBLISHED) {
             throw new UpdateConflictException("Изменить можно только отмененные события или события в состоянии ожидания модерации");
@@ -112,8 +114,8 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    public List<EventFullDto> getFullEvents(List<Integer> users, List<String> states, List<Integer> categories, String rangeStart, String rangeEnd,
-                                            Integer from, Integer size) {
+    public List<EventFullDto> getEventsForAdmin(List<Integer> users, List<String> states, List<Integer> categories, String rangeStart, String rangeEnd,
+                                                Integer from, Integer size) {
         LocalDateTime start = null;
         LocalDateTime end = null;
         if (rangeStart != null) {
@@ -131,7 +133,7 @@ public class EventServiceImpl implements EventService {
 
     @Override
     @Transactional
-    public EventFullDto updateEventAndStatus(UpdateEventUserRequest updateEventUserRequest, Integer eventId) {
+    public EventFullDto updateEventAdmin(UpdateEventUserRequest updateEventUserRequest, Integer eventId) {
         if (updateEventUserRequest.getEventDate() != null) {
             validateEventDate(LocalDateTime.parse(updateEventUserRequest.getEventDate(), Constants.DATE_TIME_FORMATTER));
         }
@@ -162,14 +164,9 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    public List<Event> getEventsByCategory(Integer catId) {
-        return eventRepository.findAllByCategoryId(catId);
-    }
-
-    @Override
     @Transactional
-    public List<EventShortDto> getAllEventsByFilters(String text, List<Integer> categories, Boolean paid, String rangeStart,
-                                                     String rangeEnd, Boolean onlyAvailable, String sort, Integer from, Integer size, HttpServletRequest request) {
+    public List<EventShortDto> getEventsPublic(String text, List<Integer> categories, Boolean paid, String rangeStart,
+                                               String rangeEnd, Boolean onlyAvailable, String sort, Integer from, Integer size, HttpServletRequest request) {
         LocalDateTime start = null;
         LocalDateTime end = null;
         if (rangeStart != null) {
