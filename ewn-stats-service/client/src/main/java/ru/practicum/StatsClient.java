@@ -21,6 +21,8 @@ public class StatsClient {
 
     private final RestClient restClient;
     private final String url;
+    private final DateTimeFormatter formatter =
+            DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
     @Autowired
     public StatsClient(@Value("${stats-server.url}") String serverUrl) {
@@ -44,8 +46,8 @@ public class StatsClient {
     }
 
     public ResponseEntity<Object> get(LocalDateTime start, LocalDateTime end, List<String> uris, Boolean unique) {
-        String formattedStart = start.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
-        String formattedEnd = end.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+        String formattedStart = start.format(formatter);
+        String formattedEnd = end.format(formatter);
 
         return restClient.get()
                 .uri(uriBuilder -> {

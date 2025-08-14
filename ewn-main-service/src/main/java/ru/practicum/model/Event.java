@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
-
+import ru.practicum.model.enums.EventState;
 
 import java.time.LocalDateTime;
 import java.util.HashSet;
@@ -67,5 +67,5 @@ public class Event {
     @ManyToMany(mappedBy = "events")
     private Set<Compilation> compilations = new HashSet<>();
 
-    private Integer view;
+    private Long views;
 }

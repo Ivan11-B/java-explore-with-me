@@ -5,7 +5,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import ru.practicum.model.Compilation;
-import ru.practicum.model.Event;
 
 import java.util.List;
 
@@ -19,8 +18,8 @@ public interface CompilationRepository extends JpaRepository<Compilation, Intege
             LIMIT :size OFFSET :from""",
             nativeQuery = true)
     List<Compilation> findAllByPinned(@Param("pinned") Boolean pinned,
-                                   @Param("from") Integer from,
-                                   @Param("size") Integer size);
+                                      @Param("from") Integer from,
+                                      @Param("size") Integer size);
 
 
     @Query(value = """

@@ -1,4 +1,4 @@
-package ru.practicum.controller;
+package ru.practicum.controller.publicApi;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -18,8 +18,8 @@ public class PublicCategoriesController {
     private final CategoriesService categoriesService;
 
     @GetMapping
-    public ResponseEntity<List<CategoryDto>> getCategories(@RequestParam(defaultValue = "0") Integer from,
-                                                          @RequestParam(defaultValue = "10") Integer size) {
+    public ResponseEntity<List<CategoryDto>> getAllCategories(@RequestParam(defaultValue = "0") Integer from,
+                                                           @RequestParam(defaultValue = "10") Integer size) {
         List<CategoryDto> categories = categoriesService.getAllCategories(from, size);
         log.info("Список категорий получен");
         return ResponseEntity.ok(categories);

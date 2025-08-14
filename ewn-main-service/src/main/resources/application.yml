@@ -9,7 +9,6 @@ logging:
     org.hibernate:SQL: DEBUG
     org.hibernate.type.descriptor.sql.BasicBinder: TRACE
 
-
 spring:
   datasource:
     driver-class-name: org.postgresql.Driver
@@ -20,3 +19,6 @@ spring:
   sql:
     init:
       mode: always
+
+stats-server:
+  url: http://stats-server:9090

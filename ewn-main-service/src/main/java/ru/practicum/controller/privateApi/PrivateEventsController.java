@@ -1,4 +1,4 @@
-package ru.practicum.controller;
+package ru.practicum.controller.privateApi;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -22,10 +22,10 @@ public class PrivateEventsController {
     private final ParticipationService participationService;
 
     @GetMapping
-    public ResponseEntity<List<EventShortDto>> getEventsUser(@PathVariable Integer userId,
-                                                       @RequestParam(defaultValue = "0") Integer from,
-                                                       @RequestParam(defaultValue = "10") Integer size) {
-        List<EventShortDto> events = eventService.getEventsCurrentUser(userId, from, size);
+    public ResponseEntity<List<EventShortDto>> getUserAllEvents(@PathVariable Integer userId,
+                                                             @RequestParam(defaultValue = "0") Integer from,
+                                                             @RequestParam(defaultValue = "10") Integer size) {
+        List<EventShortDto> events = eventService.getUserAllEvents(userId, from, size);
         log.info("Список событий, добавленных текущим пользователем получен");
         return ResponseEntity.ok(events);
     }
@@ -40,36 +40,36 @@ public class PrivateEventsController {
     }
 
     @GetMapping("/{eventId}")
-    public ResponseEntity<EventFullDto> getFullEventByIdCurrentUser(@PathVariable Integer userId,
-                                                         @PathVariable Integer eventId) {
-        EventFullDto eventFullDto = eventService.getFullEventByIdCurrentUser(userId, eventId);
+    public ResponseEntity<EventFullDto> getUserEvent(@PathVariable Integer userId,
+                                                                    @PathVariable Integer eventId) {
+        EventFullDto eventFullDto = eventService.getUserEvent(userId, eventId);
         log.info("Полная информация о событии, добавленного текущим пользователем получено");
         return ResponseEntity.ok(eventFullDto);
     }
 
     @PatchMapping("/{eventId}")
-    public ResponseEntity<EventFullDto> updateEvent(@PathVariable Integer userId,
+    public ResponseEntity<EventFullDto> updateUserEvent(@PathVariable Integer userId,
                                                     @PathVariable Integer eventId,
                                                     @Valid @RequestBody UpdateEventUserRequest updateEventUserRequest) {
         log.info("исходное dto: {}", updateEventUserRequest);
-        EventFullDto eventFullDto = eventService.updateEventCurrentUser(userId, eventId, updateEventUserRequest);
+        EventFullDto eventFullDto = eventService.updateUserEvent(userId, eventId, updateEventUserRequest);
         log.info("Изменено событие, добавленного текущим пользователем");
         return ResponseEntity.ok(eventFullDto);
     }
 
     @GetMapping("/{eventId}/requests")
-    public ResponseEntity<List<ParticipationRequestDto>> getParticipation(@PathVariable Integer userId,
-                                                                    @PathVariable Integer eventId) {
-        List<ParticipationRequestDto> participationRequestDto = participationService.getAllRequestCurrentEvent(userId, eventId);
+    public ResponseEntity<List<ParticipationRequestDto>> getAllParticipation(@PathVariable Integer userId,
+                                                                          @PathVariable Integer eventId) {
+        List<ParticipationRequestDto> participationRequestDto = participationService.getAllParticipation(userId, eventId);
         log.info("Информация о запросах на участие в событии текущего пользователя получена");
         return ResponseEntity.ok(participationRequestDto);
     }
 
     @PatchMapping("/{eventId}/requests")
-    public ResponseEntity<EventRequestStatusUpdateResult> update(@PathVariable Integer userId,
-                                                                @PathVariable Integer eventId,
-                                                                @RequestBody EventRequestStatusUpdateRequest updateRequest) {
-        EventRequestStatusUpdateResult result = participationService.updateStatus(userId, eventId, updateRequest);
+    public ResponseEntity<EventRequestStatusUpdateResult> updateStatusParticipation(@PathVariable Integer userId,
+                                                                 @PathVariable Integer eventId,
+                                                                 @RequestBody EventRequestStatusUpdateRequest updateRequest) {
+        EventRequestStatusUpdateResult result = participationService.updateStatusParticipation(userId, eventId, updateRequest);
         log.info("Изменение статуса заявок на участие в событие текущего пользователя выполнено");
         return ResponseEntity.ok(result);
     }

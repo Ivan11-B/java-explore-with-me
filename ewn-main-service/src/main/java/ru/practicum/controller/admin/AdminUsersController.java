@@ -1,4 +1,4 @@
-package ru.practicum.controller;
+package ru.practicum.controller.admin;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -22,8 +22,8 @@ public class AdminUsersController {
 
     @GetMapping
     public ResponseEntity<List<UserDto>> getUsers(@RequestParam(required = false) List<Integer> ids,
-                                            @RequestParam(defaultValue = "0") Integer from,
-                                            @RequestParam(defaultValue = "10") Integer size) {
+                                                  @RequestParam(defaultValue = "0") Integer from,
+                                                  @RequestParam(defaultValue = "10") Integer size) {
         List<UserDto> users = userService.getUsers(ids, from, size);
         log.info("Список пользователей получен");
         return ResponseEntity.ok(users);
@@ -31,14 +31,14 @@ public class AdminUsersController {
 
     @PostMapping
     public ResponseEntity<UserDto> saveUser(@Valid @RequestBody NewUserRequest newUserRequest) {
-        UserDto userDto = userService.save(newUserRequest);
+        UserDto userDto = userService.saveUser(newUserRequest);
         log.info("Пользователь добавлен");
         return ResponseEntity.status(HttpStatus.CREATED).body(userDto);
     }
 
     @DeleteMapping("/{userId}")
     public ResponseEntity<Void> deleteUser(@PathVariable Integer userId) {
-        userService.delete(userId);
+        userService.deleteUser(userId);
         log.info("Пользователь удален");
         return ResponseEntity.noContent().build();
     }

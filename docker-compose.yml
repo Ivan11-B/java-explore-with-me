@@ -1,7 +1,7 @@
 services:
   stats-server:
     ports:
-      - "9091:9090"
+      - "9090:9090"
     build:
       context: ./ewn-stats-service/server
       dockerfile: Dockerfile
