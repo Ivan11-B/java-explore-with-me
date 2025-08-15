@@ -29,7 +29,7 @@ public class StatsController {
         log.debug("Сохранение информации: {}", hitDto);
         HitDto savedHit = service.save(hitDto);
         log.info("Данные записаны: {}", savedHit);
-        return ResponseEntity.ok(savedHit);
+        return ResponseEntity.status(HttpStatus.CREATED).body(savedHit);
     }
 
     @GetMapping("/stats")
