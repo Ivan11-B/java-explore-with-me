@@ -33,6 +33,7 @@ public class EventMapper {
                 .title(newEventDto.getTitle())
                 .confirmedRequest(0)
                 .views(0L)
+                .comments(0L)
                 .build();
     }
 
@@ -57,6 +58,7 @@ public class EventMapper {
                 .state(String.valueOf(event.getState()))
                 .title(event.getTitle())
                 .views(event.getViews())
+                .comments(event.getComments())
                 .build();
     }
 
@@ -77,6 +79,7 @@ public class EventMapper {
                 .paid(event.getPaid())
                 .title(event.getTitle())
                 .views(event.getViews())
+                .comments(event.getComments())
                 .build();
     }
 
