@@ -29,6 +29,7 @@ public class Event {
     @JoinColumn(name = "category_id")
     private Category category;
 
+    @Builder.Default
     private Integer confirmedRequest = 0;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
@@ -65,7 +66,10 @@ public class Event {
     private String title;
 
     @ManyToMany(mappedBy = "events")
+    @Builder.Default
     private Set<Compilation> compilations = new HashSet<>();
 
     private Long views;
+
+    private Long comments;
 }

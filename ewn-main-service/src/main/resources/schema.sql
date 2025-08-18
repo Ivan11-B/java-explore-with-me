@@ -1,3 +1,4 @@
+DROP TABLE IF EXISTS comments;
 DROP TABLE IF EXISTS participations;
 DROP TABLE IF EXISTS compilation_events;
 DROP TABLE IF EXISTS events;
@@ -39,7 +40,8 @@ CREATE TABLE IF NOT EXISTS events (
     title varchar(255) NOT NULL,
     state varchar(255),
     confirmed_request INTEGER,
-    views BIGINT
+    views BIGINT,
+    comments BIGINT
 );
 
 CREATE TABLE IF NOT EXISTS compilation_events (
@@ -54,4 +56,12 @@ CREATE TABLE IF NOT EXISTS participations (
     created TIMESTAMP,
     user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
     status varchar(255)
+);
+
+CREATE TABLE IF NOT EXISTS comments (
+    id SERIAL PRIMARY KEY,
+    text varchar(500),
+    event_id INTEGER NOT NULL REFERENCES events(id) ON DELETE CASCADE,
+    created TIMESTAMP,
+    user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE
 );

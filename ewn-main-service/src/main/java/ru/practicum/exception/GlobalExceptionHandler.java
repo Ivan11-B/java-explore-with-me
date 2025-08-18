@@ -116,4 +116,15 @@ public class GlobalExceptionHandler {
                 .build();
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(apiError);
     }
+
+    @ExceptionHandler(CommentException.class)
+    public ResponseEntity<ApiError> handleUpdateEvent(CommentException ex) {
+        ApiError apiError = ApiError.builder()
+                .status(String.valueOf(HttpStatus.CONFLICT))
+                .message(ex.getMessage())
+                .reason("Ошибка данных")
+                .timestamp(String.valueOf(LocalDateTime.now()))
+                .build();
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(apiError);
+    }
 }
